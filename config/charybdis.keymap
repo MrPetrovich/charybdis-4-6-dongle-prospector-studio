@@ -1,3 +1,8 @@
+#include <dt-bindings/zmk/mouse.h>
+#include <behaviors/mouse_keys.dtsi>
+
+#define ZMK_POINTING_DEFAULT_SCRL_VAL 15
+
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/pointing.h>
@@ -10,9 +15,14 @@
 #define GAME 5
 #define RESET 6
 
-#define KEYS_L 0 1 2 3 4 10 11 12 13 14 20 21 22 23 24
-#define KEYS_R 5 6 7 8 9 15 16 17 18 19 25 26 27 28 29
-#define THUMBS 30 31 32 33 34 35 
+#define KEYS_L 0 1 2 3 4 5 12 13 14 15 16 17 24 25 26 27 28 29 36 37 38 39 40 41
+#define KEYS_R 6 7 8 9 10 11 18 19 20 21 22 23 30 31 32 33 34 35 42 43 44 45 46 47
+#define THUMBS 48 49 50 51 52 53 54 55
+
+&msc {
+    delay-ms = <0>;
+    time-to-max-speed-ms = <0>;
+};
 
 &sk {
   release-after-ms = <600>;
@@ -38,6 +48,61 @@
 };
 
 / {
+  /* Cursor on Base, Mouse, Symbol, Game, Reset. Auto-mouse → layer 1. */
+
+  trackball_listener {
+    compatible = "zmk,input-behavior-listener";
+    device = <&trackball>;
+    layers = <BASE MOUSE SYMBOL GAME RESET>;
+    evt-type = <INPUT_EV_REL>;
+    x-input-code = <INPUT_REL_X>;
+    y-input-code = <INPUT_REL_Y>;
+    scale-multiplier = <1>;
+    scale-divisor = <2>;
+    bindings = <&ib_toggle_layer MOUSE>;
+  };
+
+  /* Precision cursor while Number layer is held. */
+
+  trackball_snipe_listener {
+    compatible = "zmk,input-behavior-listener";
+    device = <&trackball>;
+    layers = <NUMBER>;
+    evt-type = <INPUT_EV_REL>;
+    x-input-code = <INPUT_REL_X>;
+    y-input-code = <INPUT_REL_Y>;
+    scale-multiplier = <1>;
+    scale-divisor = <3>;
+  };
+
+  /* Omnidirectional scroll while Function layer is active. */
+
+  trackball_scroll_listener {
+    compatible = "zmk,input-behavior-listener";
+    device = <&trackball>;
+    layers = <FUNCTION>;
+    evt-type = <INPUT_EV_REL>;
+    x-input-code = <INPUT_REL_MISC>;
+    y-input-code = <INPUT_REL_WHEEL>;
+    y-invert;
+    scale-multiplier = <1>;
+    scale-divisor = <3>;
+    bindings = <&ib_wheel_scaler 1 3>;
+  };
+
+  ib_wheel_scaler: ib_wheel_scaler {
+    compatible = "zmk,input-behavior-scaler";
+    #binding-cells = <2>;
+    evt-type = <INPUT_EV_REL>;
+    input-code = <INPUT_REL_WHEEL>;
+  };
+
+  ib_toggle_layer: ib_toggle_layer {
+    compatible = "zmk,input-behavior-tog-layer";
+    #binding-cells = <1>;
+    time-to-live-ms = <1000>;
+  };
+
   behaviors {
     hml: hml {
       compatible = "zmk,behavior-hold-tap";
@@ -101,53 +166,237 @@
       bindings = <&sk LSHIFT>, <&caps_word>;
       mods = <(MOD_LSFT)>;
     };
+
+    scrl_clk: scrl_clk {
+      compatible = "zmk,behavior-hold-tap";
+      #binding-cells = <2>;
+      flavor = "balanced";
+      tapping-term-ms = <200>;
+      quick-tap-ms = <175>;
+      bindings = <&mo>, <&mkp>;
+    };
+  };
+
+  macros {
+    lang: lang {
+      compatible = "zmk,behavior-macro";
+      #binding-cells = <0>;
+      bindings = <&kt LEFT_WIN &kp SPACE>;
+      label = "LANG";
+    };
+
+    screenshoot: screenshoot {
+      compatible = "zmk,behavior-macro";
+      #binding-cells = <0>;
+      bindings = <&kt LCTRL &kp LEFT_SHIFT &kp PRINTSCREEN>;
+      label = "SCREENSHOOT";
+    };
   };
 
   combos {
     compatible = "zmk,combos";
-    timeout-ms = <20>;
-    require-prior-idle-ms = <250>;
 
-    combo_reset_layer_left {
-      key-positions = <20 24>;
-      bindings = <&to RESET>;
+    rh_leftClick {
+      bindings = <&mkp LCLK>;
+      key-positions = <51 52>;
     };
-    combo_reset_layer_right {
-      key-positions = <25 29>;
-      bindings = <&to RESET>;
+
+    rh_rightClick {
+      bindings = <&mkp RCLK>;
+      key-positions = <52 53>;
     };
-    combo_reset_central {
-      key-positions = <32 33>;
-      bindings = <&bootloader>;
-      require-prior-idle-ms = <2000>;
+
+    rh_middleClick {
+      bindings = <&mkp MCLK>;
+      key-positions = <51 52 53>;
     };
-    combo_normal {
-      key-positions = <7 8>;
-      bindings = <&to BASE>;
+
+    lh_leftClick {
+      bindings = <&mkp LCLK>;
+      key-positions = <49 50>;
     };
-    combo_fn {
-      key-positions = <27 28>;
-      bindings = <&sl FUNCTION>;
+
+    lh_rightClick {
+      bindings = <&mkp RCLK>;
+      key-positions = <48 49>;
     };
-    combo_genshin {
-      key-positions = <5 9>;
-      bindings = <&to GAME>;
+
+    lh_middleClick {
+      bindings = <&mkp MCLK>;
+      key-positions = <48 49 50>;
     };
-    combo_esc {
-      key-positions = <1 2>;
-      bindings = <&kp ESCAPE>;
+
+    APOSX {
+      bindings = <&kp APOS>;
+      key-positions = <33 35>;
     };
-    combo_tab {
-      key-positions = <2 3>;
-      bindings = <&kp TAB>;
+
+    ENTERY {
+      bindings = <&kp ENTER>;
+      key-positions = <35 47>;
     };
-    combo_cdel {
-      key-positions = <11 12>;
-      bindings = <&kp LC(BACKSPACE)>;
+
+    kitty_layer {
+      bindings = <&tog SYMBOL>;
+      key-positions = <0 11 47 36>;
     };
+
+    DELETEY {
+      bindings = <&kp DELETE>;
+      key-positions = <11 23>;
+    };
+
+    LBKTX {
+      bindings = <&kp LBKT>;
+      key-positions = <33 22>;
+    };
+
+    RBKTX {
+      bindings = <&kp RBKT>;
+      key-positions = <33 23>;
+    };
+
+    MINUSX {
+      bindings = <&kp MINUS>;
+      key-positions = <33 10>;
+    };
+
+    PLUSX {
+      bindings = <&kp EQUAL>;
+      key-positions = <33 11>;
+    };
+
+    DELETEX {
+      bindings = <&kp DELETE>;
+      key-positions = <11 10>;
+    };
+
+    ToLayer1L {
+      bindings = <&mo MOUSE>;
+      key-positions = <50 54>;
+    };
+
+    ToLayer1R {
+      bindings = <&mo MOUSE>;
+      key-positions = <51 55>;
+    };
+
+    WinLX {
+      bindings = <&kp LEFT_WIN>;
+      key-positions = <48 49>;
+    };
+
+    GraveX {
+      bindings = <&kp GRAVE>;
+      key-positions = <0 1>;
+    };
+
+    GraveY {
+      bindings = <&kp GRAVE>;
+      key-positions = <0 12>;
+    };
+
+    rh_leftClickY {
+      bindings = <&mkp LCLK>;
+      key-positions = <33 51>;
+    };
+
+    rh_rightClickY {
+      bindings = <&mkp RCLK>;
+      key-positions = <35 53>;
+    };
+
+    rh_middleClickY {
+      bindings = <&mkp MCLK>;
+      key-positions = <34 52>;
+    };
+
+    ForwardR {
+      bindings = <&mkp MB5>;
+      key-positions = <52 55>;
+    };
+
+    BackR {
+      bindings = <&mkp MB4>;
+      key-positions = <51 52>;
+    };
+
+    SpaceR {
+      bindings = <&kp SPACE>;
+      key-positions = <33 35>;
+    };
+
+    SpaceL {
+      bindings = <&kp SPACE>;
+      key-positions = <26 28>;
+    };
+
     combo_unlock {
       key-positions = <0 4>;
       bindings = <&studio_unlock>;
+    };
+
+    combo_reset_layer_left {
+      key-positions = <24 28>;
+      bindings = <&to RESET>;
+      timeout-ms = <20>;
+      require-prior-idle-ms = <250>;
+    };
+
+    combo_reset_layer_right {
+      key-positions = <27 31>;
+      bindings = <&to RESET>;
+      timeout-ms = <20>;
+      require-prior-idle-ms = <250>;
+    };
+
+    combo_reset_central {
+      key-positions = <34 35>;
+      bindings = <&bootloader>;
+      timeout-ms = <20>;
+      require-prior-idle-ms = <2000>;
+    };
+
+    combo_normal {
+      key-positions = <7 8>;
+      bindings = <&to BASE>;
+      timeout-ms = <20>;
+      require-prior-idle-ms = <250>;
+    };
+
+    combo_fn {
+      key-positions = <27 28>;
+      bindings = <&sl FUNCTION>;
+      timeout-ms = <20>;
+      require-prior-idle-ms = <250>;
+    };
+
+    combo_genshin {
+      key-positions = <5 9>;
+      bindings = <&to GAME>;
+      timeout-ms = <20>;
+      require-prior-idle-ms = <250>;
+    };
+
+    combo_esc {
+      key-positions = <1 2>;
+      bindings = <&kp ESCAPE>;
+      timeout-ms = <20>;
+      require-prior-idle-ms = <250>;
+    };
+
+    combo_tab {
+      key-positions = <2 3>;
+      bindings = <&kp TAB>;
+      timeout-ms = <20>;
+      require-prior-idle-ms = <250>;
+    };
+
+    combo_cdel {
+      key-positions = <11 12>;
+      bindings = <&kp LC(BACKSPACE)>;
+      timeout-ms = <20>;
+      require-prior-idle-ms = <250>;
     };
   };
   chosen {
@@ -164,14 +413,14 @@
         // ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮   ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────────╮
                &kp ESC       &kp N1         &kp N2        &kp N3        &kp N4        &kp N5            &kp N6        &kp N7        &kp N8        &kp N9        &kp N0       &kp DEL
         // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────────┤
-               &kp TAB       &kp Q          &kp W         &kp E         &kp R         &kp T             &kp Y         &kp U         &kp I         &kp O         &kp P      &kp LEFT_BRACKET
+               &kp TAB       &kp Q          &kp W         &kp E         &kp R         &kp T             &kp Y         &kp U         &kp I         &kp O         &kp P        &kp BACKSLASH
         // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────────┤
-               &kp ESC       &kp A          &kp S         &kp D         &kp F         &kp G             &kp H         &kp J         &kp K         &kp L       &kp SEMI      &kp APOS
+               &kp CLCK      &hml LGUI A    &hml LALT S   &hml LCTRL D  &hml LSHIFT F &kp G             &kp H         &hmr RSHIFT J &hmr RCTRL K  &hmr RALT L   &hmr RGUI SEMI &kp APOS
         // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────────┤
-              &kp LSHFT      &kp Z          &kp X         &kp C         &kp V         &kp B             &kp N         &kp M      &kp COMMA      &kp DOT       &kp FSLH     &kp RIGHT_BRACKET
+               &kp LSHFT     &kp Z          &kp X         &kp C         &kp V         &kp B             &kp N         &kp M         &kp COMMA     &kp DOT       &kp FSLH     &kp RIGHT_SHIFT
         // ╰─────────────┴─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┴─────────────────╯
-                               &mo 1        &kp RET     &kp LEFT_GUI   &kp LCTRL    &kp SPACE      &kp LEFT_ALT     &mo 2       &kp BSPC
-        //                                           ╰─────────────┤─────────────┤─────────────┤   ├─────────────┼─────────────╯
+                                          &mo MOUSE     &mo NUMBER    &lt FUNCTION SPACE            &kp RETURN    &mo SYMBOL
+                                                        &kp LCTRL     &kp RIGHT_GUI                 &kp BSPC
         >;
     };
 
@@ -179,11 +428,12 @@
       label = "Mouse";
       display-name = "Mouse";
       bindings = <
-        &trans   &trans   &trans   &trans    &trans    &trans            &trans &trans   &trans   &trans   &trans     &trans
-        &trans   &trans   &trans   &trans    &trans    &trans            &trans &trans   &trans   &trans   &trans     &trans 
-        &trans   &kp LGUI &kp LALT &kp LSHFT &kp LCTRL &trans            &trans &mkp MB1 &mkp MB2 &mkp MB3 &trans     &trans
-        &trans   &trans   &trans   &mo 3     &mo 2     &trans            &trans &trans   &trans   &trans   &trans     &trans
-                          &mkp MB1  &mkp MB2  &mkp MB3 &trans &trans          &trans &trans &trans                  
+        &sys_reset  &bootloader  &trans    &trans      &trans      &trans                    &trans  &trans    &trans    &trans    &trans  &trans
+        &trans      &trans       &trans    &trans      &trans      &trans                    &trans  &trans    &trans    &trans    &trans  &trans
+        &trans      &kp LGUI     &kp LALT  &kp LSHFT   &kp LCTRL   &trans                    &trans  &mkp MB1  &mkp MB2  &mkp MB3  &trans  &trans
+        &trans      &trans       &trans    &mo NUMBER  &mo SYMBOL  &trans                    &trans  &trans    &trans    &trans    &trans  &trans
+                                           &mkp MB1    &mkp MB2    &scrl_clk FUNCTION MB3    &trans  &trans
+                                                       &trans      &trans                    &trans
       >;
     };
 
@@ -207,18 +457,18 @@
 
     Num {
       label = "Number";
-      display-name = "Number";
+      display-name = "Numb";
       bindings = <
       // ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮   ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
-             &trans        &trans         &trans       &trans         &trans       &trans          &bootloader    &sys_reset     &trans        &trans        &trans        &trans
+             &kp F1        &kp F2        &kp F3          &kp F4          &kp F5           &kp F6           &kp F7   &kp F8  &kp F9  &kp F10  &kp F11  &kp F12
       // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-             &trans        &kp EXCL       &kp AT      &kp HASH       &kp DLLR     &kp PRCNT         &kp CARET      &kp AMPS    &kp KP_MULTIPLY &kp LPAR      &kp RPAR      &kp DEL
+             &trans        &trans        &kp HOME        &kp UP_ARROW    &kp END          &kp PAGE_UP      &trans   &kp N7  &kp N8  &kp N9   &trans   &trans
       // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-             &trans        &trans         &trans       &trans         &trans       &trans           &trans          &trans      &trans        &trans        &trans        &trans
+             &trans        &screenshoot  &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW  &kp PAGE_DOWN    &trans   &kp N4  &kp N5  &kp N6   &kp N0   &trans
       // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-             &trans        &trans        &trans        &trans         &trans       &trans           &kp MINUS      &kp PLUS     &kp LBRC      &kp RBRC      &kp PIPE      &kp TILDE
+             &trans        &trans        &trans          &trans          &trans           &lang            &kp DOT  &kp N1  &kp N2  &kp N3   &trans   &trans
       // ╰─────────────┴─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┴─────────────╯
-                           &trans        &trans         &trans        &trans       &trans            &trans        &trans        &trans
+                           &trans        &trans          &trans        &trans       &trans            &trans        &trans        &trans
       //                                           ╰─────────────┤─────────────┤─────────────┤   ├─────────────┼─────────────╯
       >;
     };
