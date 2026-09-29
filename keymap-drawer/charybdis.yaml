@@ -1,10 +1,65 @@
-layout: {zmk_keyboard: charybdis, layout_name: charybdis_6col_layout}
+layout: {zmk_keyboard: charybdis}
 layers:
-  Base: [ESC, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', DEL, TAB, Q, W, E, R, T, Y, U, I, O, P, '[', ESC, A, S, D, F, G, H, J, K, L, ;, '''', LSHFT, Z, X,
-    C, V, B, N, M, ',', ., /, ']', Mouse, RET, LEFT GUI, LCTRL, SPACE, LEFT ALT, Symbol, BSPC]
+  Base:
+  - ESC
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
+  - '6'
+  - '7'
+  - '8'
+  - '9'
+  - '0'
+  - DEL
+  - TAB
+  - Q
+  - W
+  - E
+  - R
+  - T
+  - Y
+  - U
+  - I
+  - O
+  - P
+  - \
+  - CLCK
+  - {t: A, h: LGUI}
+  - {t: S, h: LALT}
+  - {t: D, h: LCTRL}
+  - {t: F, h: LSHIFT}
+  - G
+  - H
+  - {t: J, h: RSHIFT}
+  - {t: K, h: RCTRL}
+  - {t: L, h: RALT}
+  - {t: ;, h: RGUI}
+  - ''''
+  - LSHFT
+  - Z
+  - X
+  - C
+  - V
+  - B
+  - N
+  - M
+  - ','
+  - .
+  - /
+  - RIGHT SHIFT
+  - Mouse
+  - Numb
+  - {t: SPACE, h: Function}
+  - RETURN
+  - Symb
+  - LCTRL
+  - RIGHT GUI
+  - BSPC
   Mouse:
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - '&sys_reset'
+  - BOOT LDR
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -42,8 +97,8 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - Number
-  - Symbol
+  - Numb
+  - Symb
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -53,123 +108,123 @@ layers:
   - {t: ▽, type: trans}
   - {t: '&mkp MB1', type: held}
   - '&mkp MB2'
-  - '&mkp MB3'
+  - {t: '&mkp MB3', h: Function}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  Symbol:
+  Numb:
+  - F1
+  - F2
+  - F3
+  - F4
+  - F5
+  - F6
+  - F7
+  - F8
+  - F9
+  - F10
+  - F11
+  - DEV TOOLS
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - '&sys_reset'
-  - BOOT LDR
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - UP
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - HOME
+  - UP ARROW
+  - END
+  - PAGE UP
   - {t: ▽, type: trans}
   - '7'
   - '8'
   - '9'
-  - '0'
-  - HOME
-  - F1
   - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '&screenshoot'
   - LEFT
-  - DOWN
+  - DOWN ARROW
   - RIGHT
-  - {t: ▽, type: trans}
+  - PAGE DOWN
   - {t: ▽, type: trans}
   - '4'
   - '5'
   - '6'
-  - ''
-  - {t: ▽, type: trans}
-  - F10
-  - LEFT ALT
+  - '0'
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - '-'
-  - +
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '&lang'
+  - .
   - '1'
   - '2'
   - '3'
-  - .
-  - {t: ▽, type: trans}
-  - F20
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {type: held}
   - {t: ▽, type: trans}
-  Number:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - BOOT LDR
-  - '&sys_reset'
+  Symb:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - '!'
   - '@'
-  - '#'
   - $
-  - '%'
+  - '#'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '`'
   - ^
-  - '&'
-  - KP MULTIPLY
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - <
+  - '='
+  - '>'
+  - '%'
+  - {t: ▽, type: trans}
+  - '['
+  - _
+  - ']'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - \
   - (
-  - )
-  - DEL
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {type: held}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
   - '-'
-  - +
+  - )
+  - {t: ▽, type: trans}
+  - '%'
   - '{'
+  - ;
   - '}'
+  - '!'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '*'
+  - ':'
+  - /
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
   - '|'
   - '~'
+  - '&'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
   - {type: held}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -201,8 +256,8 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {type: held}
-  - {type: held}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
   - {t: Function, h: sticky}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -224,7 +279,7 @@ layers:
   - {t: Base, h: toggle}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - {type: held}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -345,6 +400,62 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
 combos:
+- p: [43, 44]
+  k: L CLK
+- p: [44, 45]
+  k: R CLK
+- p: [44, 45, 43]
+  k: M CLK
+- p: [40, 39]
+  k: L CLK
+- p: [38, 39]
+  k: R CLK
+- p: [38, 39, 40]
+  k: M CLK
+- p: [31, 35]
+  k: ''''
+- p: [35, 47]
+  k: ENTER
+- p: [0, 11, 47, 36]
+  k: {t: Symb, h: toggle}
+- p: [11, 23]
+  k: DELETE
+- p: [31, 22]
+  k: '['
+- p: [31, 23]
+  k: ']'
+- p: [31, 10]
+  k: '-'
+- p: [31, 11]
+  k: '='
+- p: [11, 10]
+  k: DELETE
+- p: [50, 54]
+  k: Mouse
+- p: [51, 55]
+  k: Mouse
+- p: [48, 49]
+  k: LEFT WIN
+- p: [0, 1]
+  k: '`'
+- p: [0, 12]
+  k: '`'
+- p: [31, 43]
+  k: L CLK
+- p: [33, 45]
+  k: R CLK
+- p: [32, 44]
+  k: M CLK
+- p: [52, 55]
+  k: FWD
+- p: [52, 51]
+  k: BACK
+- p: [33, 31, 31, 33]
+  k: SPACE
+- p: [26, 28]
+  k: SPACE
+- p: [0, 4]
+  k: ZMK Studio
 - p: [20, 24]
   k: {t: Reset, h: toggle}
 - p: [25, 29]
@@ -363,5 +474,3 @@ combos:
   k: TAB
 - p: [11, 12]
   k: Ctl+ BACK SPACE
-- p: [0, 4]
-  k: ZMK Studio
